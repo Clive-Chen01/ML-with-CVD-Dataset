@@ -1,0 +1,40 @@
+把 age 从“天”换算为“岁”；
+
+基于身高体重构造 BMI；
+
+做基本异常值过滤（血压、身高、体重、BMI 常识范围）；
+
+对数值特征做标准化，对类别特征做独热编码；
+
+训练并评估 Logistic Regression、Decision Tree、Random Forest、SVM、MLP；
+
+输出 Accuracy、Precision、Recall、F1 四项指标对比表。
+
+可以派生出额外特征：
+
+年龄（岁）、BMI、BMI 分类
+
+收缩压与舒张压差值
+
+生活方式指数（吸烟+饮酒+运动组合）
+
+
+
+结果说明：
+Logistic Regression：作为基线模型通常稳定，解释性强（可看系数方向与大小）。
+
+Decision Tree：易过拟合，本代码用 max_depth=8 限制复杂度。
+
+Random Forest：常见表现优良，鲁棒性强，适合此类结构化数据。
+
+SVM：在高维空间有效，RBF 核能建模非线性；但在大样本上训练时间较长，可按需调参或下采样。
+
+MLP：能拟合非线性关系，但对特征缩放敏感、对超参较敏感；已启用 early_stopping 防止过拟合。
+
+如果你希望进一步提升表现或强化公平比较：
+
+加入 交叉验证 + 超参搜索（GridSearchCV/RandomizedSearchCV）；
+
+统一使用 class_weight='balanced' 或尝试 SMOTE，观察指标变化（尤其是 Recall/F1）；
+
+加入 ROC-AUC 以评价整体区分能力。

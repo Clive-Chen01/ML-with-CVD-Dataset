@@ -1,0 +1,16 @@
+﻿FeatureSet,Model,BestParams,Accuracy,Precision,Recall,F1,ROC_AUC
+biomedical_only,MLP,{'clf__alpha': 0.001},0.7286,0.7281,0.7205,0.7243,0.7942
+combined,MLP,{'clf__alpha': 0.0001},0.7332,0.7498,0.6915,0.7195,0.7979
+combined,SVM,"{'clf__C': 1.0, 'clf__gamma': 'scale'}",0.7341,0.7605,0.6753,0.7154,0.7872
+combined,RandomForest,{'clf__max_depth': 20},0.7271,0.7452,0.6814,0.7119,0.7914
+biomedical_only,SVM,"{'clf__C': 1.0, 'clf__gamma': 'scale'}",0.7312,0.7613,0.6654,0.7101,0.7834
+combined,DecisionTree,{'clf__max_depth': 5},0.7293,0.7552,0.67,0.71,0.7909
+biomedical_only,DecisionTree,{'clf__max_depth': 5},0.7292,0.7552,0.6697,0.7099,0.7909
+biomedical_only,RandomForest,{'clf__max_depth': 10},0.7312,0.7635,0.6616,0.7089,0.7981
+combined,LogisticRegression,{'clf__C': 10.0},0.7269,0.7541,0.6647,0.7066,0.7899
+biomedical_only,LogisticRegression,{'clf__C': 10.0},0.725,0.7547,0.6579,0.703,0.789
+lifestyle_only,DecisionTree,{'clf__max_depth': 5},0.5117,0.5146,0.2291,0.3171,0.5097
+lifestyle_only,RandomForest,{'clf__max_depth': None},0.5117,0.5146,0.2291,0.3171,0.5097
+lifestyle_only,SVM,"{'clf__C': 0.5, 'clf__gamma': 'scale'}",0.5117,0.5146,0.2291,0.3171,0.5096
+lifestyle_only,MLP,{'clf__alpha': 0.0001},0.5117,0.5146,0.2291,0.3171,0.5098
+lifestyle_only,LogisticRegression,{'clf__C': 0.1},0.5101,0.5124,0.2042,0.292,0.5069
