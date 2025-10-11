@@ -18,57 +18,21 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 
+from data_preprocessing import load_processed_data, load_and_preprocess_data
+
 PLOTS_DIR = "plots"
 RESULTS_DIR = "results"
 os.makedirs(PLOTS_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 # ==== Load Dataset ====
-DATA_PATH = "cardio_train.csv"
-df = pd.read_csv(DATA_PATH, sep=';') if DATA_PATH.endswith(".csv") else pd.read_csv(DATA_PATH)
-
-# ==== Dataset Cleaning and Feature Engineering ====
-# Field Unification and Derivative Features
-# Transfer age from days to years
-df["age_years"] = (df["age"] / 365.25).round(2)
-# Calculate BMI（kg/m^2）
-df["height_m"] = df["height"] / 100.0
-df["bmi"] = df["weight"] / (df["height_m"] ** 2)
-
-# Outlier Filtering
-# Systolic Blood Pressure & Diastolic Blood Pressure
-df = df[(df["ap_hi"] >= 80) & (df["ap_hi"] <= 240)]
-df = df[(df["ap_lo"] >= 40) & (df["ap_lo"] <= 180)]
-df = df[df["ap_hi"] >= df["ap_lo"]]
-
-# Height and Weight
-df = df[(df["height"] >= 120) & (df["height"] <= 220)]
-df = df[(df["weight"] >= 30) & (df["weight"] <= 200)]
-
-# BMI
-df = df[(df["bmi"] >= 10) & (df["bmi"] <= 60)]
-
-# Target variables and characteristics
-target = "cardio"
-num_features = ["age_years", "height", "weight", "ap_hi", "ap_lo", "bmi"]
-cat_features = ["gender", "cholesterol", "gluc", "smoke", "alco", "active"]
-
-# Delete Columns
-df = df.drop(columns=["age", "height_m"], errors="ignore")
-# Remove Missing Parts
-df = df.dropna(subset=num_features + cat_features + [target]).copy()
-df[target] = df[target].astype(int)
-
-# ==== Define feature groups ====
-LIFESTYLE = ["smoke", "alco", "active"]
-BIOMED = ["age_years", "ap_hi", "ap_lo", "cholesterol", "gluc", "bmi", "height", "weight"]
-COMBINED = LIFESTYLE + BIOMED + ["gender"]
-
-FEATURE_SETS = {
-    "lifestyle_only": LIFESTYLE,
-    "biomedical_only": BIOMED,
-    "combined": COMBINED
-}
+# 首先尝试加载预处理后的数据，如果不存在则重新预处理
+try:
+    df, target, num_features, cat_features, FEATURE_SETS = load_processed_data("cardio_processed.csv")
+    print("使用预处理后的数据")
+except FileNotFoundError:
+    print("预处理数据不存在，正在重新预处理...")
+    df, target, num_features, cat_features, FEATURE_SETS = load_and_preprocess_data("cardio_train.csv")
 
 # ==== Divide the training/test set ====
 X_full = df[num_features + cat_features]
