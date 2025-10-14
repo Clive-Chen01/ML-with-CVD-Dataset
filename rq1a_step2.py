@@ -257,7 +257,6 @@ def summarize(scores):
     return {k: _m(v) for k, v in scores.items()} | {f"{k}_std": _s(v) for k, v in scores.items()}
 
 def train_strategy(X, y, fs_name, scaling_method, feature_selection_strategy, model_name, nested=True, return_best_params=False):
-    """Train model with specified strategy"""
     print(f"  {scaling_method} + {feature_selection_strategy} + {model_name} ({'Nested 3x3' if nested else 'CV=5'})")
     
     num_cols, cat_cols = split_cols(FEATURE_SETS[fs_name], num_features, cat_features)
@@ -457,6 +456,12 @@ if tuning_results:
     tuning_csv_path = os.path.join(RESULTS_DIR, "rq1a_hyperparameter_tuning_results.csv")
     tuning_df.to_csv(tuning_csv_path, index=False, encoding="utf-8-sig")
     print(f"Hyperparameter tuning results saved to: {tuning_csv_path}")
+
+print("\n=== Stage 1 Best Parameters ===")
+for strategy_key, best_params in best_params_storage.items():
+    print(f"\n{strategy_key}:")
+    for param, value in best_params.items():
+        print(f"  {param}: {value}")
 
 # Save final evaluation results
 results_df = pd.DataFrame(all_results)
